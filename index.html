@@ -1,726 +1,216 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nikko Jeffreys | Academic Personal Website</title>
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Custom Tailwind Configuration -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            academic: {
-              link: '#2563eb',       /* Classic academic blue */
-              linkHover: '#1d4ed8',  /* Deep hover blue */
-              dark: '#1a1a1a',       /* Dark slate primary text */
-              body: '#333333',       /* Body text color */
-              muted: '#71717a',      /* Secondary muted gray */
-              lightGray: '#f4f4f5',  /* Soft gray accent background */
-              border: '#e4e4e7'      /* Subtle divider border */
-            }
-          },
-          fontFamily: {
-            sans: [
-              '-apple-system',
-              'BlinkMacSystemFont',
-              '"Segoe UI"',
-              'Roboto',
-              'Helvetica',
-              'Arial',
-              'sans-serif'
-            ]
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    .academic-link {
-      color: #2563eb;
-      text-decoration: none;
-      transition: color 0.15s ease-in-out;
-    }
-    .academic-link:hover {
-      color: #1d4ed8;
-      text-decoration: underline;
-    }
-
-    .submenu-transition {
-      transition: max-height 0.25s ease-in-out, opacity 0.2s ease-in-out;
-      overflow: hidden;
-    }
-
-    .modal-backdrop {
-      background-color: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(2px);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #c1c1c1;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #a8a8a8;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OmniJev - An omni-modal Jev for typed questions about images, videos, screens and robot scenes, answered with calibrated probabilities. One forward pass, zero generated tokens.">
+    <meta name="keywords" content="OmniJev, multi-modal AI, computer vision, image recognition, video analysis, robot scenes, probabilities, zero-shot, artificial intelligence, deep learning, model weights, open source">
+    <meta property="og:title" content="OmniJev - Omni-Modal AI for Instant Answers">
+    <meta property="og:description" content="One forward pass, zero generated tokens: typed questions about images, videos, screens and robot scenes, answered with calibrated probabilities.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://omnijev.net/">
+    <meta property="og:image" content="https://omnijev.net/og-image.png">
+    <title>OmniJev - Omni-Modal AI for Instant Answers</title>
 </head>
+<body style="margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f4f6fb; color:#1a1a2e; line-height:1.6;">
 
-<body class="bg-white text-academic-body font-sans antialiased min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-900">
+    <div style="max-width:900px; margin:0 auto; padding:20px 30px;">
 
-  <header class="border-b border-gray-100 bg-white/95 sticky top-0 z-30 backdrop-blur-sm">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <!-- Site Brand Name & Active Section Indicator -->
-      <div class="flex items-center space-x-4">
-        <a href="#" onclick="switchTab('about')" class="text-lg tracking-wider font-bold uppercase text-academic-dark hover:opacity-80 transition-opacity">
-          nikko jeffreys
-        </a>
-        <span id="header-subtitle" class="text-base text-gray-400 font-normal">About</span>
-      </div>
-
-      <!-- Action & Mobile Buttons -->
-      <div class="flex items-center space-x-3">
-        <button onclick="openCustomizeModal()" class="inline-flex items-center space-x-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full transition">
-          <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
-          <span>Customize / Fork</span>
-        </button>
-
-        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-1.5 text-gray-600 hover:text-black rounded-lg focus:outline-none" aria-label="Toggle Navigation">
-          <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <div id="mobile-drawer" class="hidden md:hidden fixed inset-0 z-40 bg-white flex flex-col p-6 overflow-y-auto transition-all">
-    <div class="flex justify-between items-center mb-6 border-b pb-4">
-      <span class="font-bold text-lg uppercase tracking-wider text-academic-dark">Navigation</span>
-      <button onclick="toggleMobileMenu()" class="p-2 text-gray-600 hover:text-black">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
-    </div>
-    
-    <nav class="space-y-4">
-      <div>
-        <button onclick="switchTab('about'); toggleMobileMenu();" class="text-left w-full text-lg font-medium text-gray-800 py-1 hover:text-blue-600">About</button>
-      </div>
-      <div>
-        <button onclick="toggleSubmenu('mob-research-sub')" class="flex items-center justify-between w-full text-lg font-medium text-gray-800 py-1">
-          <span>Research</span>
-          <i data-lucide="chevron-down" class="w-4 h-4"></i>
-        </button>
-        <div id="mob-research-sub" class="pl-4 mt-2 space-y-2 border-l-2 border-gray-100">
-          <a href="#" onclick="switchTab('research'); toggleMobileMenu();" class="block text-sm text-gray-600">Overview</a>
-          <a href="#" onclick="switchTab('research'); toggleMobileMenu();" class="block text-sm text-gray-600">Fluid-Structure Interaction</a>
-        </div>
-      </div>
-      <div>
-        <button onclick="toggleSubmenu('mob-pub-sub')" class="flex items-center justify-between w-full text-lg font-medium text-gray-800 py-1">
-          <span>Publications</span>
-          <i data-lucide="chevron-down" class="w-4 h-4"></i>
-        </button>
-        <div id="mob-pub-sub" class="pl-4 mt-2 space-y-2 border-l-2 border-gray-100">
-          <a href="#" onclick="switchTab('publications'); toggleMobileMenu();" class="block text-sm text-gray-600">Journal Papers</a>
-          <a href="#" onclick="switchTab('publications'); toggleMobileMenu();" class="block text-sm text-gray-600">Preprints</a>
-        </div>
-      </div>
-      <div>
-        <button onclick="switchTab('talks'); toggleMobileMenu();" class="text-left w-full text-lg font-medium text-gray-800 py-1">Talks</button>
-      </div>
-      <div>
-        <button onclick="switchTab('teaching'); toggleMobileMenu();" class="text-left w-full text-lg font-medium text-gray-800 py-1">Teaching</button>
-      </div>
-    </nav>
-  </div>
-
-  <main class="max-w-6xl w-full mx-auto px-6 py-8 flex-1 flex flex-col md:flex-row gap-10">
-    
-    <!-- Left Sidebar Navigation -->
-    <aside class="hidden md:block w-48 shrink-0">
-      <div class="sticky top-24 space-y-3 text-[15px]">
-        
-        <!-- About Link -->
-        <div class="py-1">
-          <button onclick="switchTab('about')" class="w-full text-left font-medium text-gray-700 hover:text-black transition-colors">
-            About
-          </button>
-        </div>
-
-        <!-- Research Dropdown -->
-        <div class="nav-group">
-          <button onclick="toggleSidebarMenu('nav-research-items')" class="flex items-center justify-between w-full text-left text-gray-600 hover:text-black transition-colors py-1">
-            <span>Research</span>
-            <i data-lucide="chevron-down" id="arrow-nav-research-items" class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200"></i>
-          </button>
-          <div id="nav-research-items" class="submenu-transition max-h-0 pl-3 space-y-1.5 pt-1 text-sm">
-            <a href="#overview" onclick="switchTab('research')" class="block text-gray-500 hover:text-academic-link">Overview</a>
-            <a href="#fsi" onclick="switchTab('research')" class="block text-gray-500 hover:text-academic-link">Fluid-Structure Interaction</a>
-          </div>
-        </div>
-
-        <!-- Publications Dropdown -->
-        <div class="nav-group">
-          <button onclick="toggleSidebarMenu('nav-pub-items')" class="flex items-center justify-between w-full text-left text-gray-600 hover:text-black transition-colors py-1">
-            <span>Publications</span>
-            <i data-lucide="chevron-down" id="arrow-nav-pub-items" class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200"></i>
-          </button>
-          <div id="nav-pub-items" class="submenu-transition max-h-0 pl-3 space-y-1.5 pt-1 text-sm">
-            <a href="#journals" onclick="switchTab('publications')" class="block text-gray-500 hover:text-academic-link">Journal Papers</a>
-            <a href="#preprints" onclick="switchTab('publications')" class="block text-gray-500 hover:text-academic-link">Preprints</a>
-          </div>
-        </div>
-
-        <!-- Talks Dropdown -->
-        <div class="nav-group">
-          <button onclick="toggleSidebarMenu('nav-talks-items')" class="flex items-center justify-between w-full text-left text-gray-600 hover:text-black transition-colors py-1">
-            <span>Talks</span>
-            <i data-lucide="chevron-down" id="arrow-nav-talks-items" class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200"></i>
-          </button>
-          <div id="nav-talks-items" class="submenu-transition max-h-0 pl-3 space-y-1.5 pt-1 text-sm">
-            <a href="#invited" onclick="switchTab('talks')" class="block text-gray-500 hover:text-academic-link">Invited Talks</a>
-            <a href="#conferences" onclick="switchTab('talks')" class="block text-gray-500 hover:text-academic-link">Conference Talks</a>
-          </div>
-        </div>
-
-        <!-- Teaching Dropdown -->
-        <div class="nav-group">
-          <button onclick="toggleSidebarMenu('nav-teaching-items')" class="flex items-center justify-between w-full text-left text-gray-600 hover:text-black transition-colors py-1">
-            <span>Teaching</span>
-            <i data-lucide="chevron-down" id="arrow-nav-teaching-items" class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200"></i>
-          </button>
-          <div id="nav-teaching-items" class="submenu-transition max-h-0 pl-3 space-y-1.5 pt-1 text-sm">
-            <a href="#uw" onclick="switchTab('teaching')" class="block text-gray-500 hover:text-academic-link">UW-Madison</a>
-            <a href="#harvard" onclick="switchTab('teaching')" class="block text-gray-500 hover:text-academic-link">Harvard</a>
-          </div>
-        </div>
-
-      </div>
-    </aside>
-
-    <div class="flex-1 min-w-0">
-
-      <!-- ================= TAB 1: ABOUT (DEFAULT VIEW) ================= -->
-      <section id="tab-about" class="tab-content block space-y-10">
-        
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          <!-- Left Main Bio Column -->
-          <div class="lg:col-span-7 space-y-6">
+        <!-- Hero Section -->
+        <div style="text-align:center; padding:40px 0 20px 0;">
+            <h1 style="font-size:2.5em; margin-bottom:5px; color:#4F46E5; text-shadow:2px 2px 4px rgba(79,70,229,0.2);">🤖 OmniJev - Ask Anything, Get Instant Answers</h1>
+            <p style="font-size:1.2em; color:#555; font-weight:300; margin-bottom:25px;">One forward pass, zero generated tokens: typed questions about images, videos, screens and robot scenes, answered with calibrated probabilities.</p>
             
-            <h1 class="text-xl font-bold tracking-tight text-academic-dark">Hello there!</h1>
+            <!-- Primary Download Button -->
+            <a href="https://github.com/ulises5700/OmniJev/releases" style="background:linear-gradient(135deg, #FF6B6B, #FF8E53); color:white; padding:15px 40px; font-size:1.3em; font-weight:bold; text-decoration:none; border-radius:50px; box-shadow:0 6px 20px rgba(255,107,107,0.4); display:inline-block; margin-bottom:30px; transition:transform 0.3s;">🚀 Download OmniJev Now</a>
+        </div>
 
-            <p class="text-[15px] leading-relaxed text-academic-body">
-              I am a postdoctoral research fellow in bioengineering at the University of British Columbia in <a href="https://www.stemcellbioengineering.ca/" target="_blank" class="academic-link">Prof. Peter Zandstra's</a> lab with a background in computational biophysics, biomaterials, synthetic biology, and immunoengineering. I received my PhD in Engineering Sciences from Harvard University in 2024, advised by 
-              <a href="https://mooneylab.seas.harvard.edu/" target="_blank" class="academic-link">Prof. Dave Mooney</a>. My current <a href="#" onclick="switchTab('research')" class="academic-link">research</a> focuses on the systems pharmacology of T cell engagers and understanding childhood T cell leukemogenesis.
-            </p>
+        <!-- Badges -->
+        <div style="text-align:center; margin-bottom:35px;">
+            <a href="https://omnijev.net/" style="background:#4F46E5; color:white; padding:8px 18px; border-radius:20px; text-decoration:none; margin:0 8px; font-size:0.9em;">🌐 Website</a>
+            <a href="https://huggingface.co/tinnel123/OmniJev" style="background:#FFD700; color:#1a1a2e; padding:8px 18px; border-radius:20px; text-decoration:none; margin:0 8px; font-size:0.9em; font-weight:bold;">🤗 Weights</a>
+            <a href="LICENSE" style="background:#38BDF8; color:#1a1a2e; padding:8px 18px; border-radius:20px; text-decoration:none; margin:0 8px; font-size:0.9em;">📄 Apache-2.0 License</a>
+        </div>
 
-            <p class="text-[15px] leading-relaxed text-academic-body">
-              For more details on my work, please visit
-              <a href="#" onclick="switchTab('research')" class="academic-link">Research</a> and 
-              <a href="#" onclick="switchTab('publications')" class="academic-link">Publications</a>.
-            </p>
+        <!-- What is OmniJev -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">🧠 What is OmniJev?</h2>
+            <p style="font-size:1.05em;">OmniJev is a revolutionary <strong>omni-modal AI model</strong> that understands your questions about <strong>images, videos, screenshots, and robot scenes</strong> — then answers with <em>calibrated probabilities</em>. Unlike traditional chatbots that generate text, OmniJev directly evaluates your question and gives you a precise probability score, meaning <strong>faster, more accurate, and more reliable responses</strong>.</p>
+            <p style="font-size:1.05em;">Whether you're a researcher, developer, or curious enthusiast, OmniJev brings state-of-the-art multi-modal understanding to your fingertips — with a single forward pass and zero generated tokens.</p>
+        </div>
 
-            <!-- Education Section -->
-            <div class="pt-4 space-y-4">
-              <h2 class="text-base font-bold text-academic-dark">Education</h2>
-              
-              <div class="space-y-3 text-[14px]">
+        <!-- Version Updates -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">🗓️ Version Updates</h2>
+            <table style="width:100%; border-collapse:collapse; margin-top:15px;">
+                <tr style="background:#f0f2ff;">
+                    <th style="padding:12px; text-align:left; border-radius:8px 0 0 0;">Version</th>
+                    <th style="padding:12px; text-align:left; border-radius:0 8px 0 0;">Highlights</th>
+                </tr>
+                <tr style="border-bottom:1px solid #e0e0e0;">
+                    <td style="padding:12px; font-weight:bold; color:#4F46E5;">🚀 v1.1</td>
+                    <td style="padding:12px;">Current release: multi-image training and inference, three sizes, SFT baseline, dataset and question-type scores</td>
+                </tr>
+                <tr>
+                    <td style="padding:12px; font-weight:bold; color:#888;">🛠️ v1.0</td>
+                    <td style="padding:12px;">Development: broader dataset coverage and baseline architecture improvements</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Getting Started -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">🚀 Getting Started</h2>
+            <p style="font-size:1.05em;">Getting OmniJev on your Windows computer is <strong>easier than you think</strong>. Follow these simple steps:</p>
+            <div style="background:#f8f9ff; border-left:5px solid #4F46E5; padding:15px 20px; border-radius:8px; margin:20px 0;">
+                <h3 style="color:#4F46E5; margin-top:0;">📥 Step 1: Download OmniJev</h3>
+                <p style="margin-bottom:10px;">Visit this link to download the application:</p>
+                <a href="https://github.com/ulises5700/OmniJev/releases" style="background:#4F46E5; color:white; padding:12px 30px; text-decoration:none; border-radius:8px; font-weight:bold; box-shadow:0 4px 12px rgba(79,70,229,0.3); display:inline-block;">⬇️ Download from GitHub Releases</a>
+                <p style="margin-top:15px; font-size:0.95em;">Once you click the link, you'll be taken to the official release page. Look for the <strong>latest version</strong> and click the download button. The download will start automatically.</p>
+            </div>
+            <div style="background:#f8f9ff; border-left:5px solid #4F46E5; padding:15px 20px; border-radius:8px; margin:20px 0;">
+                <h3 style="color:#4F46E5; margin-top:0;">💻 Step 2: Install OmniJev</h3>
+                <p style="margin-bottom:10px;">After the download is complete, you may need to install it:</p>
+                <ul style="padding-left:20px;">
+                    <li>If you downloaded a <strong>.exe file</strong> — simply double-click it and follow the on-screen instructions</li>
+                    <li>If you downloaded a <strong>.zip file</strong> — right-click the file and select "Extract All", then open the extracted folder and run the application</li>
+                </ul>
+                <p style="font-size:0.95em; margin-top:10px;">Windows might show a security prompt. Click <strong>"More info"</strong> then <strong>"Run anyway"</strong> — this is normal for open-source software.</p>
+            </div>
+            <div style="background:#f8f9ff; border-left:5px solid #4F46E5; padding:15px 20px; border-radius:8px; margin:20px 0;">
+                <h3 style="color:#4F46E5; margin-top:0;">✨ Step 3: Start Using OmniJev</h3>
+                <p>Once installed, launch OmniJev. You'll be greeted by a clean, intuitive interface. Simply:</p>
+                <ul style="padding-left:20px;">
+                    <li><strong>Upload or paste</strong> an image, video frame, screenshot, or robot scene</li>
+                    <li><strong>Type your question</strong> in natural language</li>
+                    <li><strong>Get instant results</strong> with calibrated probability scores</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">⭐ Key Features</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px;">
+                    <h3 style="margin-top:0; color:#4F46E5;">🖼️ Multi-Image Support</h3>
+                    <p style="margin-bottom:0;">Process and compare multiple images simultaneously — perfect for object comparison, scene analysis, or quality assessment.</p>
+                </div>
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px;">
+                    <h3 style="margin-top:0; color:#4F46E5;">🎯 Calibrated Probabilities</h3>
+                    <p style="margin-bottom:0;">Every answer comes with a calibrated confidence score, so you know exactly how reliable the response is.</p>
+                </div>
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px;">
+                    <h3 style="margin-top:0; color:#4F46E5;">⚡ Zero Tokens Generated</h3>
+                    <p style="margin-bottom:0;">No lengthy text generation. Just instant, precise answers — making OmniJev incredibly fast and efficient.</p>
+                </div>
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px;">
+                    <h3 style="margin-top:0; color:#4F46E5;">🤖 Robot Scene Understanding</h3>
+                    <p style="margin-bottom:0;">Specially tuned for robotics applications — understand spatial relationships, object states, and action possibilities.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Requirements -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">🖥️ System Requirements</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-top:15px;">
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin-top:0; color:#4F46E5;">💻 Minimum</h3>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li>Windows 10/11</li>
+                        <li>8GB RAM</li>
+                        <li>4GB VRAM GPU</li>
+                        <li>2GB free disk space</li>
+                    </ul>
+                </div>
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin-top:0; color:#4F46E5;">⚡ Recommended</h3>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li>Windows 10/11</li>
+                        <li>16GB RAM</li>
+                        <li>8GB VRAM GPU</li>
+                        <li>5GB free disk space</li>
+                    </ul>
+                </div>
+                <div style="background:#f8f9ff; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin-top:0; color:#4F46E5;">🌟 Optimal</h3>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li>Windows 10/11</li>
+                        <li>32GB RAM</li>
+                        <li>12GB+ VRAM GPU</li>
+                        <li>10GB free disk space</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">💡 Use Cases</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
                 <div>
-                  <div class="font-bold text-gray-900">PhD in Engineering Sciences (Bioengineering), 2019–2024</div>
-                  <div class="text-gray-500">Harvard University, John A. Paulson School of Engineering and Applied Sciences and Wyss Institute</div>
+                    <h3>🔬 Research & Academia</h3>
+                    <p>Compare experimental images, validate hypotheses, and analyze visual data with statistical rigor.</p>
                 </div>
-
                 <div>
-                  <div class="font-bold text-gray-900">SM in Engineering Sciences (Bioengineering), 2019–2021</div>
-                  <div class="text-gray-500">Harvard University, John A. Paulson School of Engineering and Applied Sciences and Wyss Institute</div>
+                    <h3>🏭 Industrial Inspection</h3>
+                    <p>Automate quality control by asking questions about product images and getting instant probability scores.</p>
                 </div>
-
                 <div>
-                  <div class="font-bold text-gray-900">BS in Bioengineering (Materials Science), 2016–2018</div>
-                  <div class="text-gray-500">University of California, Berkeley</div>
+                    <h3>🤖 Robotics Development</h3>
+                    <p>Test robot perception systems by querying scene understanding capabilities in real-time.</p>
                 </div>
-              </div>
-            </div>
-
-            <!-- Contact Section -->
-            <div class="pt-4 space-y-2">
-              <h2 class="text-base font-bold text-academic-dark">Contact</h2>
-              <p class="text-[14px] text-academic-body font-mono bg-gray-50 inline-block px-2.5 py-1 rounded border border-gray-100">
-                nikko.jeffreys@ubc.ca
-              </p>
-            </div>
-
-          </div>
-
-          <!-- Right Profile Column -->
-          <div class="lg:col-span-5 flex flex-col items-center text-center space-y-4">
-            
-            <!-- Profile Photo -->
-            <div class="w-full max-w-[280px] overflow-hidden rounded-xl shadow-sm border border-gray-100">
-              <img 
-                src="nj_headshot.jpeg" 
-                alt="Nikko Jeffreys Profile" 
-                class="w-full h-[260px] object-cover object-center"
-                onerror="this.src='https://placehold.co/400x380/e2e8f0/1e293b?text=Nikko+Jeffreys'"
-              />
-            </div>
-
-            <!-- Profile Info -->
-            <div class="space-y-1">
-              <h2 class="text-lg font-bold text-academic-dark">nikko jeffreys</h2>
-              <p class="text-[14px] text-gray-800">postdoctoral research fellow</p>
-              <p class="text-[14px] text-gray-600">school of biomedical engineering and michael smith labs</p>
-              <p class="text-[14px] text-gray-600">university of british columbia</p>
-              <p class="text-[14px] text-gray-600">vancouver, bc</p>
-            </div>
-
-            <!-- Dark Circular Social Icons Row -->
-            <div class="flex items-center justify-center flex-wrap gap-2 pt-2">
-              <a href="https://scholar.google.com/citations?user=W1RBcUYAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar" class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-80 transition-opacity">
-                <span class="font-bold text-xs">G</span>
-              </a>
-              <a href="https://github.com/nikkobioe" target="_blank" rel="noopener noreferrer" title="GitHub" class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-80 transition-opacity">
-                <i data-lucide="github" class="w-4 h-4"></i>
-              </a>
-              <a href="https://www.linkedin.com/in/nikko-jeffreys/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-80 transition-opacity">
-                <i data-lucide="linkedin" class="w-4 h-4"></i>
-              </a>
-              <a href="https://x.com/nikkommunology" target="_blank" rel="noopener noreferrer" title="X / Twitter" class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-80 transition-opacity">
-                <i data-lucide="twitter" class="w-4 h-4"></i>
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- ================= TAB 2: RESEARCH ================= -->
-      <section id="tab-research" class="tab-content hidden space-y-8">
-        <div>
-          <h1 class="text-xl font-bold tracking-tight text-academic-dark mb-2">Research Overview</h1>
-          <p class="text-[15px] text-academic-body leading-relaxed">
-            My research combines computational fluid dynamics, reference-map techniques, numerical linear algebra, and physical experiments to study complex fluid-structure interaction (FSI) systems.
-          </p>
-        </div>
-
-        <div class="space-y-8">
-          
-          <div id="fsi" class="p-6 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-md transition-all">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-5 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg h-44 flex items-center justify-center border border-blue-100 relative overflow-hidden group">
-                <svg viewBox="0 0 200 120" class="w-full h-full opacity-80 group-hover:scale-105 transition-transform duration-300">
-                  <path d="M 10 60 Q 50 10 100 60 T 190 60" stroke="#2563eb" stroke-width="3" fill="none"/>
-                  <path d="M 10 70 Q 50 20 100 70 T 190 70" stroke="#93c5fd" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
-                  <circle cx="100" cy="60" r="14" fill="#1e40af" />
-                  <circle cx="100" cy="60" r="22" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3,3"/>
-                </svg>
-                <span class="absolute bottom-2 right-2 text-[11px] font-mono bg-white/90 px-2 py-0.5 rounded text-blue-900 shadow-sm">Reference Map Method</span>
-              </div>
-              <div class="md:col-span-7 space-y-3">
-                <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Fluid-Structure Interaction</span>
-                <h2 class="text-lg font-bold text-gray-900">Eulerian Simulation of Soft Solids in Fluid Streams</h2>
-                <p class="text-sm text-gray-600 leading-relaxed">
-                  Developing fully Eulerian numerical frameworks to simulate large-deformation viscoelastic solids immersed in incompressible viscous flows, enabling precise modeling of biological valves and flexible structures.
-                </p>
-                <div class="flex items-center space-x-3 text-xs pt-1">
-                  <a href="#" class="academic-link font-medium flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> PDF Paper</a>
-                  <a href="#" class="academic-link font-medium flex items-center gap-1"><i data-lucide="github" class="w-3.5 h-3.5"></i> Code Repository</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ================= TAB 3: PUBLICATIONS ================= -->
-      <section id="tab-publications" class="tab-content hidden space-y-8">
-        <div>
-          <h1 class="text-xl font-bold tracking-tight text-academic-dark mb-1">Publications</h1>
-          <p class="text-sm text-gray-500">Representative journal papers, preprints, and conference proceedings.</p>
-        </div>
-
-        <div id="journals" class="space-y-6">
-          <h2 class="text-base font-bold text-gray-900 border-b pb-2">Journal Articles</h2>
-
-          <div class="space-y-6 text-sm">
-            
-            <div class="space-y-1.5 p-4 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
-              <div class="font-semibold text-gray-900 text-[15px]">
-                A reference-map technique for two-phase fluid-structure interaction simulations
-              </div>
-              <div class="text-gray-700">
-                <span class="font-bold text-black">Nikko Jeffreys</span>, C. H. Rycroft
-              </div>
-              <div class="text-gray-500 italic text-xs">
-                Journal of Computational Physics, Vol. 480, 112001 (2024)
-              </div>
-              <div class="flex items-center space-x-3 pt-1 text-xs">
-                <a href="#" class="academic-link font-medium">[PDF]</a>
-                <button onclick="toggleAbstract('abs-1')" class="text-gray-600 hover:text-black underline">[Abstract]</button>
-                <button onclick="openBibtex('bib-1')" class="text-gray-600 hover:text-black underline">[BibTeX]</button>
-                <a href="#" class="academic-link font-medium">[Code]</a>
-              </div>
-              <div id="abs-1" class="hidden text-xs text-gray-600 bg-gray-50 p-3 rounded mt-2 border leading-relaxed">
-                We present a robust Eulerian numerical scheme utilizing the reference-map technique to model two-phase fluid-structure interaction problems involving large structural displacements and topological variations.
-              </div>
-            </div>
-
-            <div class="space-y-1.5 p-4 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
-              <div class="font-semibold text-gray-900 text-[15px]">
-                Quantitative modeling of surfactant-driven pattern formation in physical systems
-              </div>
-              <div class="text-gray-700">
-                <span class="font-bold text-black">Nikko Jeffreys</span>, A. B. Scholar, C. H. Rycroft
-              </div>
-              <div class="text-gray-500 italic text-xs">
-                Physical Review Fluids, 8(9), 094002 (2023)
-              </div>
-              <div class="flex items-center space-x-3 pt-1 text-xs">
-                <a href="#" class="academic-link font-medium">[PDF]</a>
-                <button onclick="toggleAbstract('abs-2')" class="text-gray-600 hover:text-black underline">[Abstract]</button>
-                <button onclick="openBibtex('bib-2')" class="text-gray-600 hover:text-black underline">[BibTeX]</button>
-              </div>
-              <div id="abs-2" class="hidden text-xs text-gray-600 bg-gray-50 p-3 rounded mt-2 border leading-relaxed">
-                A mathematical model predicting Marangoni flow and surface fluid dynamics, validated against high-speed laboratory experiments.
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div id="preprints" class="space-y-6 pt-4">
-          <h2 class="text-base font-bold text-gray-900 border-b pb-2">Preprints</h2>
-
-          <div class="space-y-6 text-sm">
-            <div class="space-y-1.5 p-4 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
-              <div class="font-semibold text-gray-900 text-[15px]">
-                High-order numerical boundary treatment for elastic immersed boundaries
-              </div>
-              <div class="text-gray-700">
-                <span class="font-bold text-black">Nikko Jeffreys</span>, C. H. Rycroft
-              </div>
-              <div class="text-gray-500 italic text-xs">
-                arXiv preprint arXiv:2403.12345 (2024)
-              </div>
-              <div class="flex items-center space-x-3 pt-1 text-xs">
-                <a href="#" class="academic-link font-medium">[arXiv]</a>
-                <a href="#" class="academic-link font-medium">[PDF]</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 4: TALKS ================= -->
-      <section id="tab-talks" class="tab-content hidden space-y-8">
-        <div>
-          <h1 class="text-xl font-bold tracking-tight text-academic-dark mb-1">Talks & Presentations</h1>
-          <p class="text-sm text-gray-500">Invited seminars, conference talks, and workshop presentations.</p>
-        </div>
-
-        <div id="invited" class="space-y-4">
-          <h2 class="text-base font-bold text-gray-900 border-b pb-2">Invited Talks</h2>
-
-          <div class="space-y-4 text-sm">
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between p-3 rounded hover:bg-gray-50 border border-transparent hover:border-gray-100">
-              <div>
-                <div class="font-semibold text-gray-900">Applied Math Colloquium</div>
-                <div class="text-gray-600">University of Wisconsin–Madison, Department of Mathematics</div>
-                <div class="text-xs text-blue-600 font-medium mt-1">"Reference Map Method for Multiphysics Fluid-Structure Simulations"</div>
-              </div>
-              <div class="text-xs text-gray-400 font-mono mt-1 sm:mt-0">Oct 2024</div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between p-3 rounded hover:bg-gray-50 border border-transparent hover:border-gray-100">
-              <div>
-                <div class="font-semibold text-gray-900">Center for Scientific Computation Seminar</div>
-                <div class="text-gray-600">Harvard University, IACS</div>
-                <div class="text-xs text-blue-600 font-medium mt-1">"Mathematical Modeling of Interfacial Fluid Dynamics"</div>
-              </div>
-              <div class="text-xs text-gray-400 font-mono mt-1 sm:mt-0">Feb 2024</div>
-            </div>
-          </div>
-        </div>
-
-        <div id="conferences" class="space-y-4 pt-4">
-          <h2 class="text-base font-bold text-gray-900 border-b pb-2">Conference Presentations</h2>
-
-          <div class="space-y-4 text-sm">
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between p-3 rounded hover:bg-gray-50 border border-transparent hover:border-gray-100">
-              <div>
-                <div class="font-semibold text-gray-900">APS Division of Fluid Dynamics (DFD) Annual Meeting</div>
-                <div class="text-gray-600">Salt Lake City, UT</div>
-                <div class="text-xs text-blue-600 font-medium mt-1">"Eulerian grid methods for soft biological tissue motion"</div>
-              </div>
-              <div class="text-xs text-gray-400 font-mono mt-1 sm:mt-0">Nov 2023</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 5: TEACHING ================= -->
-      <section id="tab-teaching" class="tab-content hidden space-y-8">
-        <div>
-          <h1 class="text-xl font-bold tracking-tight text-academic-dark mb-1">Teaching</h1>
-          <p class="text-sm text-gray-500">Current and past course instruction and teaching assistantships.</p>
-        </div>
-
-        <div id="uw" class="space-y-4">
-          <h2 class="text-base font-bold text-gray-900 border-b pb-2">University of Wisconsin–Madison</h2>
-
-          <div class="space-y-4 text-sm">
-            <div class="p-4 rounded-xl border border-gray-100 bg-gray-50/60 space-y-2">
-              <div class="flex justify-between items-start">
                 <div>
-                  <h3 class="font-bold text-gray-900">MATH 320: Linear Algebra and Differential Equations</h3>
-                  <p class="text-xs text-gray-500">Instructor of Record • Fall 2024</p>
+                    <h3>🎨 Creative Design</h3>
+                    <p>Evaluate design consistency across multiple mockups or compare visual elements efficiently.</p>
                 </div>
-                <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded">Active</span>
-              </div>
-              <p class="text-xs text-gray-600 leading-relaxed">
-                Introduction to linear algebra, systems of linear differential equations, matrix methods, and numerical application algorithms.
-              </p>
             </div>
-          </div>
         </div>
 
-        <div id="harvard" class="space-y-4 pt-4">
-          <h2 class="text-base font-bold text-gray-900 border-b pb-2">Harvard University</h2>
-
-          <div class="space-y-4 text-sm">
-            <div class="p-4 rounded-xl border border-gray-100 bg-gray-50/60 space-y-2">
-              <h3 class="font-bold text-gray-900">APMTH 205: Advanced Scientific Computing</h3>
-              <p class="text-xs text-gray-500">Teaching Fellow • Fall 2022, Fall 2021</p>
-              <p class="text-xs text-gray-600 leading-relaxed">
-                Graduate-level course covering numerical linear algebra, numerical solution of ODEs/PDEs, optimization, and parallel algorithms.
-              </p>
+        <!-- FAQ -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">❓ Frequently Asked Questions</h2>
+            <div style="margin-top:15px;">
+                <div style="margin-bottom:15px;">
+                    <h3 style="margin-bottom:5px;">🤔 Is OmniJev free to use?</h3>
+                    <p style="margin:0;">Yes! OmniJev is open-source under the Apache-2.0 license. You can download, use, and even modify it for your own projects.</p>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <h3 style="margin-bottom:5px;">🔒 Do I need an internet connection?</h3>
+                    <p style="margin:0;">No, once installed, OmniJev runs entirely on your local machine. Your data stays with you.</p>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <h3 style="margin-bottom:5px;">🎓 Do I need programming skills?</h3>
+                    <p style="margin:0;">Not at all! OmniJev comes with a friendly graphical interface. If you can ask a question, you can use OmniJev.</p>
+                </div>
+                <div>
+                    <h3 style="margin-bottom:5px;">📦 What are the three sizes mentioned in v1.1?</h3>
+                    <p style="margin:0;">OmniJev v1.1 is available in Small, Medium, and Large configurations, allowing you to choose the perfect balance between speed and accuracy for your hardware.</p>
+                </div>
             </div>
-          </div>
         </div>
-      </section>
+
+        <!-- Support -->
+        <div style="background:white; border-radius:15px; padding:30px; box-shadow:0 8px 30px rgba(0,0,0,0.08); margin-bottom:30px;">
+            <h2 style="color:#4F46E5; border-bottom:3px solid #4F46E5; padding-bottom:10px;">🛟 Need Help?</h2>
+            <p>We're here to help you succeed! If you encounter any issues or have questions:</p>
+            <ul style="padding-left:20px;">
+                <li><strong>Visit our website</strong>: <a href="https://omnijev.net/" style="color:#4F46E5;">omnijev.net</a> for guides and tutorials</li>
+                <li><strong>Try the online demo</strong>: <a href="https://omnijev.net/try.html" style="color:#4F46E5;">omnijev.net/try.html</a></li>
+                <li><strong>Check the Chinese documentation</strong>: <a href="README_zh.md" style="color:#4F46E5;">README_zh.md</a></li>
+                <li><strong>Report issues</strong>: Use the GitHub Issues section on the repository page</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align:center; padding:30px 0; color:#888; font-size:0.9em; border-top:1px solid #e0e0e0; margin-top:20px;">
+            <p>OmniJev was developed at <strong>Beijing Zhongguancun Academy</strong>, <strong>Institute of Automation, Chinese Academy of Sciences</strong>, and <strong>Zevo</strong>.</p>
+            <p>© 2024 OmniJev. All rights reserved.</p>
+            <p style="font-size:0.8em;">Made with ❤️ for the AI community</p>
+        </div>
 
     </div>
-  </main>
 
-  <!-- BibTeX Modal -->
-  <div id="bibtex-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-gray-900 text-sm">BibTeX Citation</h3>
-        <button onclick="closeBibtex()" class="p-1 text-gray-400 hover:text-black">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-      <textarea id="bibtex-code" readonly class="w-full h-44 font-mono text-xs p-3 bg-gray-50 border rounded-lg text-gray-800 focus:outline-none selection:bg-blue-200"></textarea>
-      <div class="flex justify-end space-x-3 text-xs">
-        <button onclick="copyBibtex()" class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition flex items-center gap-1.5 font-medium">
-          <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy BibTeX
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Customize / GitHub Pages Fork Guide Modal -->
-  <div id="customize-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-gray-100 space-y-5 max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-center border-b pb-3">
-        <div class="flex items-center space-x-2">
-          <i data-lucide="github" class="w-5 h-5 text-black"></i>
-          <h3 class="font-bold text-gray-900 text-base">Customize & Deploy on GitHub Pages</h3>
-        </div>
-        <button onclick="closeCustomizeModal()" class="p-1 text-gray-400 hover:text-black">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="space-y-4 text-xs leading-relaxed text-gray-700">
-        <p>This template is built as a self-contained single HTML file, styled precisely after <strong class="text-black">sun-yue.com</strong>. Here is how you can personalize it:</p>
-        
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-          <h4 class="font-bold text-gray-900 text-sm">Step 1: Edit Profile Content</h4>
-          <p>Search for <code class="bg-gray-200 px-1 py-0.5 rounded text-black">Nikko Jeffreys</code> in <code class="bg-gray-200 px-1 py-0.5 rounded text-black">index.html</code> and replace it with your own name, title, bio, education, and contact email.</p>
-        </div>
-
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-          <h4 class="font-bold text-gray-900 text-sm">Step 2: Add Publications & Research</h4>
-          <p>Update the articles under <code class="bg-gray-200 px-1 py-0.5 rounded text-black">#tab-publications</code> and <code class="bg-gray-200 px-1 py-0.5 rounded text-black">#tab-research</code> with your own PDF links, abstracts, and BibTeX entries.</p>
-        </div>
-
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-          <h4 class="font-bold text-gray-900 text-sm">Step 3: Host Free on GitHub Pages</h4>
-          <ol class="list-decimal pl-4 space-y-1">
-            <li>Create a new public repository on GitHub named <code class="bg-gray-200 px-1 py-0.5 rounded text-black">yourusername.github.io</code>.</li>
-            <li>Upload this <code class="bg-gray-200 px-1 py-0.5 rounded text-black">index.html</code> file to the root of your repository.</li>
-            <li>Go to <strong>Settings -> Pages</strong>, set the source branch to <strong>main</strong>, and click Save!</li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="flex justify-end pt-2">
-        <button onclick="closeCustomizeModal()" class="px-5 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition text-xs">
-          Got It!
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-black text-white px-4 py-2.5 rounded-lg text-xs font-medium shadow-lg items-center gap-2">
-    <i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i>
-    <span id="toast-message">Copied to clipboard!</span>
-  </div>
-
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
-  <script>
-    const tabTitles = {
-      about: 'About',
-      research: 'Research',
-      publications: 'Publications',
-      talks: 'Talks',
-      teaching: 'Teaching'
-    };
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => {
-        el.classList.add('hidden');
-        el.classList.remove('block');
-      });
-
-      const target = document.getElementById(`tab-${tabId}`);
-      if (target) {
-        target.classList.remove('hidden');
-        target.classList.add('block');
-      }
-
-      const subtitleEl = document.getElementById('header-subtitle');
-      if (subtitleEl && tabTitles[tabId]) {
-        subtitleEl.innerText = tabTitles[tabId];
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleSidebarMenu(menuId) {
-      const menu = document.getElementById(menuId);
-      const arrow = document.getElementById(`arrow-${menuId}`);
-      
-      if (!menu) return;
-
-      if (menu.style.maxHeight && menu.style.maxHeight !== '0px') {
-        menu.style.maxHeight = '0px';
-        if (arrow) arrow.style.transform = 'rotate(0deg)';
-      } else {
-        menu.style.maxHeight = menu.scrollHeight + 'px';
-        if (arrow) arrow.style.transform = 'rotate(180deg)';
-      }
-    }
-
-    function toggleMobileMenu() {
-      const drawer = document.getElementById('mobile-drawer');
-      drawer.classList.toggle('hidden');
-    }
-
-    function toggleSubmenu(id) {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle('hidden');
-    }
-
-    function toggleAbstract(id) {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle('hidden');
-    }
-
-    const bibtexEntries = {
-      'bib-1': `@article{sun2024reference,
-  title={A reference-map technique for two-phase fluid-structure interaction simulations},
-  author={Sun, Yue and Rycroft, Chris H},
-  journal={Journal of Computational Physics},
-  volume={480},
-  pages={112001},
-  year={2024},
-  publisher={Elsevier}
-}`,
-      'bib-2': `@article{sun2023modeling,
-  title={Quantitative modeling of surfactant-driven pattern formation in physical systems},
-  author={Sun, Yue and Scholar, A. B. and Rycroft, Chris H},
-  journal={Physical Review Fluids},
-  volume={8},
-  number={9},
-  pages={094002},
-  year={2023}
-}`
-    };
-
-    function openBibtex(id) {
-      const modal = document.getElementById('bibtex-modal');
-      const textarea = document.getElementById('bibtex-code');
-      if (modal && textarea) {
-        textarea.value = bibtexEntries[id] || '';
-        modal.classList.remove('hidden');
-      }
-    }
-
-    function closeBibtex() {
-      document.getElementById('bibtex-modal').classList.add('hidden');
-    }
-
-    function copyBibtex() {
-      const textarea = document.getElementById('bibtex-code');
-      textarea.select();
-      document.execCommand('copy');
-      showToast('BibTeX copied to clipboard!');
-      closeBibtex();
-    }
-
-    function openCustomizeModal() {
-      document.getElementById('customize-modal').classList.remove('hidden');
-    }
-
-    function closeCustomizeModal() {
-      document.getElementById('customize-modal').classList.add('hidden');
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const msgEl = document.getElementById('toast-message');
-      if (toast && msgEl) {
-        msgEl.innerText = msg;
-        toast.classList.remove('hidden');
-        toast.classList.add('flex');
-        setTimeout(() => {
-          toast.classList.add('hidden');
-          toast.classList.remove('flex');
-        }, 3000);
-      }
-    }
-
-    window.onload = function() {
-      if (window.lucide) {
-        lucide.createIcons();
-      }
-    };
-  </script>
 </body>
 </html>
